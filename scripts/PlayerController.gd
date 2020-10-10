@@ -7,7 +7,7 @@ const TOP_SPEED = 7
 func _ready():
 	pass
 
-func _physics_process(delta):
+func _physics_process(_delta: float):
 	if Input.is_action_pressed("play_left") and Input.is_action_pressed("play_right"):
 		velocity.x = lerp(velocity.x, 0, slowdown_speed)
 	elif Input.is_action_pressed("play_left"):
@@ -27,3 +27,6 @@ func _physics_process(delta):
 		velocity.z = lerp(velocity.z, 0, slowdown_speed)
 		
 	move_and_slide(velocity)
+	
+func do_input(button_type: JoyButton, input_type: JoyInputType, value: Object):
+	pass
