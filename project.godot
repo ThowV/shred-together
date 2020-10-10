@@ -8,26 +8,19 @@
 
 config_version=4
 
-_global_script_classes=[ {
-"base": "Reference",
-"class": "JoyButton",
-"language": "GDScript",
-"path": "res://scripts/enums/JoyButton.gd"
-}, {
-"base": "Reference",
-"class": "JoyInputType",
-"language": "GDScript",
-"path": "res://scripts/enums/JoyInputType.gd"
-} ]
+_global_script_classes=[  ]
 _global_script_class_icons={
-"JoyButton": "",
-"JoyInputType": ""
+
 }
 
 [application]
 
 config/name="ShredTogether"
 config/icon="res://icon.png"
+
+[autoload]
+
+Global="*res://scripts/Global.gd"
 
 [input]
 
