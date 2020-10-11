@@ -40,3 +40,6 @@ shape = SubResource( 3 )
 [node name="MeshInstance" type="MeshInstance" parent="Box2"]
 mesh = SubResource( 4 )
 material/0 = null
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( -0.299157, 0, -0.954204, 0, 1, 0, 0.954204, 0, -0.299157, 0, 6.50193, 0 )

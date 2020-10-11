@@ -2,27 +2,35 @@ extends Node
 
 const DEADZONE = 0.5
 
+var playing: bool
 var character: Node
+var viewport_manager_path: NodePath
 var joy_id: int
 var jump_pressed: bool
 
 
 # warning-ignore:shadowed_variable
-func setup(character: Node, joy_id: int):
-	self.character = character
+func setup(viewport_manager_path: NodePath, joy_id: int):
+	self.playing = false
+	self.viewport_manager_path = viewport_manager_path
 	self.joy_id = joy_id
 
 
 func _physics_process(delta: float):
-	handle_movement(delta)
-
 	# Check for buttons
 	if Input.is_joy_button_pressed(joy_id, 0) and ! jump_pressed:
 		# Button 0 got pressed for the first time
 		jump_pressed = true
+		# Enter playing state
+		if ! playing:
+			character = get_parent().get_node(viewport_manager_path).spawn_character(joy_id)
+			playing = true
 	if ! Input.is_joy_button_pressed(joy_id, 0) and jump_pressed:
 		# Button 0 got released
 		jump_pressed = false
+
+	if playing:
+		handle_movement(delta)
 
 
 func handle_movement(delta: float):

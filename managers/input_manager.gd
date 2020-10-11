@@ -1,6 +1,6 @@
 extends Node
 
-export (NodePath) var character_manager_path
+export (NodePath) var viewport_manager_path
 
 
 func _ready():
@@ -18,10 +18,10 @@ func _joy_connection_changed(id: int, status: bool):
 		# Create a player input controller and add it
 		# Create a new node object, load the script
 		var player_controller = Node.new()
-		var player_controller_script = load("res://scripts/PlayerInputManager.gd")
+		var player_input_manager_script = load("res://managers/player_input_manager.gd")
 		# Add the script to the node, do the setup and set the name
-		player_controller.set_script(player_controller_script)
-		player_controller.setup(get_node(character_manager_path).spawn_character(id), id)
+		player_controller.set_script(player_input_manager_script)
+		player_controller.setup(viewport_manager_path, id)
 		player_controller.set_name("PlayerController-" + str(id))
 		# Instantiate the node
 		add_child(player_controller)
