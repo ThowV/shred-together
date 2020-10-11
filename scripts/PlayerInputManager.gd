@@ -2,57 +2,50 @@ extends Node
 
 const DEADZONE = 0.5
 
-var input_manager: Node
+var character: Node
 var joy_id: int
 var jump_pressed: bool
 
 
 # warning-ignore:shadowed_variable
-func setup(input_manager: Node, joy_id: int):
-	self.input_manager = input_manager
+func setup(character: Node, joy_id: int):
+	self.character = character
 	self.joy_id = joy_id
 
 
-func _physics_process(_delta: float):
+func _physics_process(delta: float):
+	handle_movement(delta)
+
 	# Check for buttons
 	if Input.is_joy_button_pressed(joy_id, 0) and ! jump_pressed:
-		# Jump got pressed for the first time
+		# Button 0 got pressed for the first time
 		jump_pressed = true
-		input_manager.input_made(joy_id, Global.JoyButton.T1, Global.JoyInputType.PRESS_START, 1)
 	if ! Input.is_joy_button_pressed(joy_id, 0) and jump_pressed:
-		# Jump got released
+		# Button 0 got released
 		jump_pressed = false
-		input_manager.input_made(joy_id, Global.JoyButton.T1, Global.JoyInputType.PRESS_RELEASE, 1)
 
+
+func handle_movement(delta: float):
+	character.do_movement(delta, get_stick_input(0, 1))
+
+
+func handle_rotation():
+	#character.do_rotation(get_stick_input(2, 3))
+	pass
+
+
+func get_stick_input(x_axis: int, y_axis: int) -> Vector2:
 	# Check for sticks
-	var left_stick_raw_input = Vector2(Input.get_joy_axis(joy_id, 0), Input.get_joy_axis(joy_id, 1))
-	var left_stick_input = Vector2(0, 0)
+	var stick_raw_input = Vector2(
+		Input.get_joy_axis(joy_id, x_axis), Input.get_joy_axis(joy_id, y_axis)
+	)
+	var stick_input = Vector2(0, 0)
 
-	var rigt_stick_raw_input = Vector2(Input.get_joy_axis(joy_id, 2), Input.get_joy_axis(joy_id, 3))
-	var right_stick_input = Vector2(0, 0)
+	# Apply deadzone to left stick horizontal movement and send input
+	if stick_raw_input.x >= DEADZONE or stick_raw_input.x <= -DEADZONE:
+		stick_input.x = sign(stick_raw_input.x)
+	# Apply deadzone to left stick vertical movement and send input
+	if stick_raw_input.y >= DEADZONE or stick_raw_input.y <= -DEADZONE:
+		stick_input.y = sign(stick_raw_input.y)
 
-	# Filter joy sticks using deadzone
-	# Filter left stick horizontal input
-	if left_stick_raw_input.x >= DEADZONE or left_stick_raw_input.x <= -DEADZONE:
-		left_stick_input.x = left_stick_raw_input.x
-	# Filter left stick vertical input
-	if left_stick_raw_input.y >= DEADZONE or left_stick_raw_input.y <= -DEADZONE:
-		left_stick_input.y = left_stick_raw_input.y
-	# Filter right stick horizontal input
-	if rigt_stick_raw_input.x >= DEADZONE or rigt_stick_raw_input.x <= -DEADZONE:
-		right_stick_input.x = rigt_stick_raw_input.x
-	# Filter right stick vertical input
-	if rigt_stick_raw_input.y >= DEADZONE or rigt_stick_raw_input.y <= -DEADZONE:
-		right_stick_input.y = rigt_stick_raw_input.y
-
-	# Send the inputs to the global input manager
-	# Send left stick input
-	if left_stick_input.length() > 0:
-		input_manager.input_made(
-			joy_id, Global.JoyButton.T1, Global.JoyInputType.PIVOT, left_stick_input
-		)
-	# Send right stick input
-	if right_stick_input.length() > 0:
-		input_manager.input_made(
-			joy_id, Global.JoyButton.T1, Global.JoyInputType.PIVOT, right_stick_input
-		)
+	return stick_input

@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scripts/InputManager.gd" type="Script" id=1]
+[ext_resource path="res://scripts/SceneManager.gd" type="Script" id=2]
+[ext_resource path="res://assets/CharacterManager.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/Character.tscn" type="PackedScene" id=4]
+
+[node name="Main" type="Node"]
+
+[node name="InputManager" type="Node" parent="." groups=[
+"managers",
+]]
+script = ExtResource( 1 )
+character_manager_path = NodePath("../SceneManager/CharacterManager")
+
+[node name="SceneManager" type="Node" parent="." groups=[
+"managers",
+]]
+script = ExtResource( 2 )
+
+[node name="CharacterManager" parent="SceneManager" groups=[
+"managers",
+] instance=ExtResource( 3 )]
+character_path = ExtResource( 4 )
+
+[node name="Camera" type="Camera" parent="SceneManager"]
+transform = Transform( 1, 0, 0, 0, 0.7907, 0.612203, 0, -0.612203, 0.7907, 0, 4.03926, 6.96354 )
