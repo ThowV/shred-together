@@ -2,9 +2,5 @@
 
 [ext_resource path="res://managers/player_input_manager.gd" type="Script" id=1]
 
-
-
-
-
 [node name="PlayerController" type="Node"]
 script = ExtResource( 1 )

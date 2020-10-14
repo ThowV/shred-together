@@ -16,17 +16,25 @@ onready var viewport_containers = [
 	$VBoxContainer/HBoxContainerMiddle/ViewportContainerR
 ]
 
+onready var viewports = [
+	$VBoxContainer/HBoxContainerTop/ViewportContainerL/Viewport,
+	$VBoxContainer/HBoxContainerTop/ViewportContainerM/Viewport,
+	$VBoxContainer/HBoxContainerTop/ViewportContainerR/Viewport,
+	$VBoxContainer/HBoxContainerMiddle/ViewportContainerL/Viewport,
+	$VBoxContainer/HBoxContainerMiddle/ViewportContainerM/Viewport,
+	$VBoxContainer/HBoxContainerMiddle/ViewportContainerR/Viewport
+]
 
-func create_view(view_count: int):
+
+func _create_views(view_count: int):
 	if view_count > 2:
-		apply_constraints(hbox_middle)
+		_apply_constraints(hbox_middle)
 
 	for idx in range(view_count):
-		apply_constraints(viewport_containers[idx - 1])
+		_apply_constraints(viewport_containers[idx])
 
 
-func apply_constraints(container: BoxContainer):
-	container.alignment = BoxContainer.ALIGN_CENTER
+func _apply_constraints(container: ViewportContainer):
 	container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	container.size_flags_vertical = Control.SIZE_EXPAND_FILL
 
@@ -36,5 +44,6 @@ func spawn_character(viewport_idx):
 	character.name = "Character-" + str(viewport_idx)
 	character.translate(Vector3(0, 3, 0))
 
-	viewport_containers[viewport_idx].add_child(character)
+	_create_views(viewport_idx + 1)
+	viewports[viewport_idx].add_child(character)
 	return character
