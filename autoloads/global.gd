@@ -1,21 +1,25 @@
 extends Node
 
-enum JoyInputType { AXIS, BUTTON }
+const JOYCON_DEADZONE = 0.5
 
-enum JoyInputAction {
-	PRESS_START,
-	PRESSING,
-	PRESS_RELEASE,
-	PIVOT,
-}
+const _JOYCON_INPUT_MAP = {0: "JUMP", 12: "FORWARD", 13: "BACKWARD", 14: "LEFT", 15: "RIGHT"}
 
-enum PlayerActions { MOVE_HORIZONTAL, MOVE_VERTICAL, LOOK_HORIZONTAL, LOOK_VERTICAL, JUMP }
 
-const PLAYER_INPUT_MAP_AXIS = [
-	PlayerActions.MOVE_HORIZONTAL,
-	PlayerActions.MOVE_VERTICAL,
-	PlayerActions.LOOK_HORIZONTAL,
-	PlayerActions.LOOK_VERTICAL
-]
+func joycon_id_to_map(btn_id: int) -> String:
+	return _JOYCON_INPUT_MAP[btn_id]
 
-const PLAYER_INPUT_MAP_BUTTONS = [PlayerActions.JUMP]
+
+func joycon_map_to_id(map_str: String) -> int:
+	for btn_id in _JOYCON_INPUT_MAP:
+		if _JOYCON_INPUT_MAP[btn_id] == map_str:
+			return btn_id
+
+	return -1
+
+#const KEYBOARD_INPUT_MAP = {
+#	"KEY_32": "JUMP",
+#	"KEY_87": "FORWARD",
+#	"KEY_83": "BACKWARD",
+#	"KEY_65": "LEFT",
+#	"KEY_68": "RIGHT"
+#}
